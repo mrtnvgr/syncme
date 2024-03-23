@@ -3,7 +3,7 @@ name = "syncme"
 version = "0.1.0"
 edition = "2021"
 description = "Lazy syncing utility"
-repository = "github.com/mrtnvgr/syncme"
+repository = "https://github.com/mrtnvgr/syncme"
 license = "GPL-3.0"
 
 [dependencies]
