@@ -35,7 +35,7 @@ fn main() {
             copy(&source_path, &dest_path).expect("Failed to copy a file");
         }
 
-        println!("{source_path:?} -> {dest_path:?}");
+        eprintln!("{source_path:?} -> {dest_path:?}");
     }
 
     for dest_path in get_files(&args.dest, true) {
@@ -55,7 +55,7 @@ fn main() {
                 .expect("Failed to remove a path");
         }
 
-        println!("{dest_path:?} -> /dev/null");
+        eprintln!("{dest_path:?} -> /dev/null");
     }
 }
 
