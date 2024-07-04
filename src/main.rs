@@ -1,5 +1,5 @@
 use clap::Parser;
-use path_absolutize::*;
+use path_absolutize::Absolutize;
 use std::fs::{copy, create_dir_all, remove_dir, remove_file};
 use std::path::{Path, PathBuf};
 use walkdir::WalkDir;
@@ -18,7 +18,7 @@ fn main() {
     args.source = get_absolute(&args.source);
     args.dest = get_absolute(&args.dest);
 
-    for source_path in get_files(&args.source, false) {
+    for source_path in get_files(&args.source) {
         let rel_path = source_path
             .strip_prefix(&args.source)
             .expect("Failed to strip prefix");
@@ -38,7 +38,7 @@ fn main() {
         eprintln!("{source_path:?} -> {dest_path:?}");
     }
 
-    for dest_path in get_files(&args.dest, true) {
+    for dest_path in get_files(&args.dest) {
         let rel_path = dest_path
             .strip_prefix(&args.dest)
             .expect("Failed to strip prefix");
@@ -65,12 +65,12 @@ fn get_absolute(path: &Path) -> PathBuf {
         .to_path_buf()
 }
 
-fn get_files(path: &Path, allow_dirs: bool) -> Vec<PathBuf> {
+fn get_files(path: &Path) -> Vec<PathBuf> {
     WalkDir::new(path)
         .min_depth(1)
+        .contents_first(true)
         .into_iter()
         .flatten()
-        .filter(|x| !x.file_type().is_dir() || allow_dirs)
         .map(|x| x.path().to_path_buf())
         .collect()
 }
